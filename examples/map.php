@@ -5,7 +5,7 @@
      
     // Check if the user is logged in, if not then redirect him to login page
     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-        header("location: index.php");
+        header("location: ../index.php");
         exit;
 }
 ?>
@@ -15,7 +15,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../img/new 4.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Tenant System Management
@@ -73,6 +73,12 @@
               <p>Sales Price</p>
             </a>
           </li>
+            <li class="nav-item ">
+            <a class="nav-link" href="./btn.php">
+              <i class="material-icons">bubble_chart</i>
+              <p>Avalabel space on the floor</p>
+            </a>
+          </li>
           <li class="nav-item active">
             <a class="nav-link" href="./map.php">
               <i class="material-icons">library_books</i>
@@ -89,12 +95,6 @@
             <a class="nav-link" href="./rtl.php">
               <i class="material-icons">content_paste</i>
               <p>List of Stall Spaces Reports </p>
-            </a>
-          </li>
-          <li class="nav-item active-pro ">
-            <a class="nav-link" href="#">
-              <i class="material-icons">unarchive</i>
-              <p>Upgrade</p>
             </a>
           </li>
         </ul>
@@ -223,7 +223,7 @@
                                         echo "<td style='color: gray; font-weight: 800; font-style: italic;'>" . $status . "</td>";
                                     }
                                     echo "<td>";
-                                        echo "<a href='admin-view-applied-stall.php?app_id=$app_id' class='btn btn-primary btn-sm' style='margin: 1px; font-size: 13px;'>View</a>";
+                                        echo "<a href='maph.php?app_id=$app_id' class='btn btn-primary btn-sm' style='margin: 1px; font-size: 13px;'>View</a>";
                                     echo "</td>";
                                 echo "</tr>";
                             }
@@ -240,8 +240,11 @@
                 </div>
               </div>
             </div>
+            <div class="content">
+        <div class="container-fluid">
+          <div class="row">
             <div class="col-md-12">
-              <div class="card card-plain">
+              <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title mt-0">List of Contracts</h4>
                   <p class="card-category"> List of Contracts Detals</p>
@@ -349,7 +352,7 @@
                                     }
                                                 
                                     echo "<td>";
-                                        echo "<a href='admin-view-contract-details.php?contract_id=$contract_id' class='btn btn-primary btn-sm ' style='margin: 1px; font-size: 13px;'>View</a>";
+                                        echo "<a href='tablesh.php?contract_id=$contract_id' class='btn btn-primary btn-sm ' style='margin: 1px; font-size: 13px;'>View</a>";
                                         if($row_contracts['start_date'] && $row_contracts['end_date']){
                                             // echo "<a href='admin-set-contract.php?contract_id=$contract_id' class='btn btn-info btn-sm disabled' style='margin: 1px; font-size: 13px;'>Set</a>";
                                         }elseif($row_contracts['remark'] == 'Pending'){

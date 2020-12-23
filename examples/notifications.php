@@ -15,7 +15,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../img/new 4.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Tenant System Management
@@ -73,6 +73,12 @@
               <p>Sales Price</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./btn.php">
+              <i class="material-icons">bubble_chart</i>
+              <p>Avalabel space on the floor</p>
+            </a>
+          </li>
           <li class="nav-item ">
             <a class="nav-link" href="./map.php">
               <i class="material-icons">library_books</i>
@@ -91,12 +97,7 @@
               <p>List of Stall Spaces Reports </p>
             </a>
           </li>
-          <li class="nav-item active-pro ">
-            <a class="nav-link" href="#">
-              <i class="material-icons">unarchive</i>
-              <p>Upgrade</p>
-            </a>
-          </li>
+          
         </ul>
       </div>
     </div>

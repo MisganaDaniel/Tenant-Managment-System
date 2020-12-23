@@ -15,7 +15,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../img/new 4.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Tenant System Management
@@ -39,7 +39,7 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo"><a href="#" class="simple-text logo-normal">
-         System Admin
+          Tenant System Management
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
@@ -74,6 +74,12 @@
             </a>
           </li>
           <li class="nav-item ">
+            <a class="nav-link" href="./btn.php">
+              <i class="material-icons">bubble_chart</i>
+              <p>Avalabel space on the floor</p>
+            </a>
+          </li>
+          <li class="nav-item ">
             <a class="nav-link" href="./map.php">
               <i class="material-icons">library_books</i>
               <p>Application Reports</p>
@@ -91,12 +97,6 @@
               <p>List of Stall Spaces Reports </p>
             </a>
           </li>
-          <!-- <li class="nav-item active-pro ">
-            <a class="nav-link" href="#">
-              <i class="material-icons">unarchive</i>
-              <p>Upgrade</p>
-            </a>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -105,7 +105,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#">Tenant Managment System Dashboard</a>
+            <a class="navbar-brand" href="javascript:;">Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -569,7 +569,7 @@
                                         echo "<td style='color: gray; font-weight: 800; font-style: italic;'>" . $status . "</td>";
                                     }
                                     echo "<td>";
-                                        echo "<a href='admin-view-applied-stall.php?app_id=$app_id' class='btn btn-primary btn-sm' style='margin: 1px; font-size: 13px;'>View</a>";
+                                        echo "<a href='maph.php?app_id=$app_id' class='btn btn-primary btn-sm' style='margin: 1px; font-size: 13px;'>View</a>";
                                     echo "</td>";
                                 echo "</tr>";
                             }

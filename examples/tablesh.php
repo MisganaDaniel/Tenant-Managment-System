@@ -54,7 +54,7 @@
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item  ">
+          <li class="nav-item  active">
             <a class="nav-link" href="./tables.php">
               <i class="material-icons">content_paste</i>
               <p>list of tables</p>
@@ -84,87 +84,24 @@
               <p>Application Reports</p>
             </a>
           </li>
-          <li class="nav-item  ">
+          <li class="nav-item ">
             <a class="nav-link" href="./notifications.php">
               <i class="material-icons">notifications</i>
               <p>Renewal Requests Reports</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item ">
             <a class="nav-link" href="./rtl.php">
               <i class="material-icons">content_paste</i>
               <p>List of Stall Spaces Reports </p>
             </a>
           </li>
+
           
         </ul>
       </div>
     </div>
     <div class="main-panel">
-      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;">Dashboard</a>
-          </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="javascript:;">
-                  <i class="material-icons">dashboard</i>
-                  <p class="d-lg-none d-md-block">
-                    Stats
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
-                  <p class="d-lg-none d-md-block">
-                    Some Actions
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                 
-                  <a class="dropdown-item" href="#">You have 5 Renewal Requests Reports </a>
-                  <a class="dropdown-item" href="#"> You have new List of Stall Spaces Reports <a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">person</i>
-                  <p class="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Settings</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="../api/logout.php">Log out</a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
@@ -235,8 +172,8 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Price History</h4>
-                  <p class="card-category"> Previous
+                  <h4 class="card-title ">Contract Details</h4>
+                  <p class="card-category"> Information
 
 </p>
                 </div>
@@ -244,98 +181,243 @@
                   <div class="table-responsive">
                     <table class="table">
                       <thead class=" text-primary">
-                        <th>Old Price</th>
-                        <th>Date End</th>
-                        <th>Date Effectivity</th>
+                         <th colspan="2">Contract</th>
                     </thead>
                     <?php 
                         require_once "../api/config.php";
-                        $stall_id = $_GET['stall_id'];
+                        $contract_id = $_GET['contract_id'];
+                        $remark = $start_date = $end_date = $verified = "";
 
-                        $sql_history = "SELECT * FROM stall_pricehistory WHERE stall_id = $stall_id";
-                        $result_history = mysqli_query($link, $sql_history);
-                        if(mysqli_num_rows($result_history) > 0){
-                            while($row_history = mysqli_fetch_assoc($result_history)){
-                                echo "<tr align='center'>";
-                                    echo "<td>Php " . number_format($row_history['stall_price'],2) . "</td>";
-                                    $old_date_end = strtotime($row_history['date_end']);
-                                    $new_date_end = date('Y-m-d', $old_date_end);
-                                    echo "<td>" . $new_date_end . "</td>";
-                                    $old_date_effectivty = strtotime($row_history['date_effectivity']);
-                                    $new_date_effectivity = date('Y-m-d', $old_date_effectivty);
-                                    echo "<td>" . $new_date_effectivity . "</td>";
+                        $sql_contract = "SELECT cl.fname AS 'fname', cl.lname AS 'lname', c.business_name AS 'business_name',
+                        bc.category_name AS 'category_name', c.contract_term AS 'contract_term', c.start_date AS 'start_date',
+                        c.end_date AS 'end_date', c.date_approved AS 'date_approved', c.remark AS 'remark', c.verified AS 'verified'
+                        FROM contract c
+                        INNER JOIN client cl ON c.client_id = cl.client_id
+                        INNER JOIN business_classification bc ON c.category_id = bc.category_id
+                        WHERE c.contract_id = $contract_id 
+                        ";
+
+                        $result_contract = mysqli_query($link, $sql_contract);
+                        if(mysqli_num_rows($result_contract) > 0 ){
+                            while($row_contract = mysqli_fetch_assoc($result_contract)){
+                                $remark = $row_contract['remark'];
+                                $start_date = $row_contract['start_date'];
+                                $end_date = $row_contract['end_date'];
+                                $term = $row_contract['contract_term'];
+                                $verified = $row_contract['verified'];
+
+                                echo "<tr>";
+                                    echo "<td align='right'>Client:</td><td align='center'>" . $row_contract['fname'] . " " . $row_contract['lname'] . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td align='right'>Business Name:</td><td align='center'>" . $row_contract['business_name'] . "</td>"; 
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td align='right'>Category:</td><td align='center'>" . $row_contract['category_name'] . "</td>"; 
+                                echo "</tr>";
+                                echo "<tr>";
+                                    $old_date_approved = strtotime($row_contract['date_approved']);
+                                    $new_date_approved = date('Y-m-d', $old_date_approved);
+                                    echo "<td align='right'>Date Approved:</td><td align='center'>" . $new_date_approved . "</td>"; 
+                                echo "</tr>";
+                                echo "<tr>";
+                                    if($term == 'Pending'){
+                                        echo "<td align='right'>Term:</td><td align='center' style='color: orange; font-weight: 800; font-style: italic;'>" . $row_contract['contract_term'] . "</td>"; 
+                                    }elseif($remark == 'Lapsed' || $remark == 'Cancelled'){
+                                        echo '<td align="right">Term:</td>';
+                                        echo '<td style="color:gray; font-style: italic; font-weight: 800;" align="center">N/A</td>';
+                                    }else{
+                                        echo "<td align='right'>Term:</td><td align='center'>" . $row_contract['contract_term'] . "</td>"; 
+                                    }
+                                echo "</tr>";
+                                echo "<tr>";
+                                    if($row_contract['start_date']){
+                                        $old_start_date = strtotime($row_contract['start_date']);
+                                        $new_start_date = date('Y-m-d', $old_start_date);
+                                        echo "<td align='right'>Start Date:</td><td align='center'>" . $new_start_date . "</td>";
+                                    }else{
+                                        echo "<td align='right'>Start Date:</td><td align='center' style='color: grey; font-weight: 800; font-style: italic;'>N/A</td>";
+                                    }
+                                echo "</tr>";
+                                echo "<tr>";
+                                    if($row_contract['end_date']){
+                                        $old_end_date = strtotime($row_contract['end_date']);
+                                        $new_end_date = date('Y-m-d', $old_end_date);
+                                        echo "<td align='right'>End Date:</td><td align='center'>" . $new_end_date . "</td>"; 
+                                    }else{
+                                        echo "<td align='right'>End Date:</td><td align='center' style='color: grey; font-weight: 800; font-style: italic;'>N/A</td>";
+                                    }
+                                echo "</tr>";
+                                echo "<tr>";
+                                    if($row_contract['remark'] == 'Confirmed'){
+                                        echo "<td align='right'>Remark:</td><td align='center' style='color: green; font-weight: 800; font-style: italic;'>" . $row_contract['remark'] . "</td>";
+                                    }elseif($row_contract['remark'] == 'Cancelled'){
+                                        echo "<td align='right'>Remark:</td><td align='center' style='color: red; font-weight: 800; font-style: italic;'>" . $row_contract['remark'] . "</td>";
+                                    }elseif($row_contract['remark'] == 'Pending'){
+                                        echo "<td align='right'>Remark:</td><td align='center' style='color: orange; font-weight: 800; font-style: italic;'>" . $row_contract['remark'] . "</td>";
+                                    }elseif($row_contract['remark'] == 'Lapsed'){
+                                        echo "<td align='right'>Remark:</td><td align='center' style='color: red; font-weight: 800; font-style: italic;'>" . $row_contract['remark'] . "</td>";
+                                    }
                                 echo "</tr>";
                             }
-                        }else{
-                            echo "<tr align='center'>";
-                                echo "<td colspan='4' style='font-style: italic;'>No records found.</td>";
-                            echo "</tr>";
                         }
                     ?>
                 </table>
-            </div>
-            <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Current History</h4>
-                  <p class="card-category"> Current
-
-</p>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                    <thead>
-                        <th>#</th>
-                        <th>Floor</th>
-                        <th>Block</th>
-                        <th>Block Dimension</th>
-                        <th>Current Price</th>
-                        <th>Date Effectivity</th>
-                    </thead>
-                        <?php
-                        $sql_stalls = "SELECT * FROM stalls WHERE stall_id = $stall_id";
-
-                        $result_stalls = mysqli_query($link, $sql_stalls);
-                        if(mysqli_num_rows($result_stalls) > 0 ){
-                            while($row_stalls = mysqli_fetch_assoc($result_stalls)){
-                                $floor_no = $row_stalls['floor_no'];
-                                $block_no = $row_stalls['block_no'];
-                                $block_dimension = $row_stalls['block_dimension'];
-                                $stall_price = $row_stalls['stall_price'];
-                                $price_date_effectivity = $row_stalls['price_date_effectivity'];
-                                $stall_id = $row_stalls['stall_id'];
-
-                                echo "<tr align='center' style='font-size: 15px;'>";
-                                    echo "<td>" . $stall_id . "</td>";
-                                    echo "<td>" . $floor_no . "</td>";
-                                    echo "<td>" . $block_no . "</td>";
-                                    echo "<td>" . $block_dimension . "</td>";
-                                    echo "<td>Php " . number_format($stall_price,2) . "</td>";
-                                    $old_price_date = strtotime($price_date_effectivity);
-                                    $new_price_date = date('Y-m-d', $old_price_date);
-                                    echo "<td>" . $new_price_date . "</td>";
-                                echo "</tr>";
-                            }
+                <?php 
+                    if($verified == 'False'){
+                        if($remark == 'Confirmed'){
+                            echo "<a href='api/admin-set-contract.php?contract_id=$contract_id' class='btn btn-primary btn-sm float-right'>Verify</a>";
                         }
-                        ?>
-                        </table>
+                    }
+                 
+                ?>
+                </table>
                   </div>
                 </div>
               </div>
             </div>
-            
-                    <div class="main-panel">
+           <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary"><h4 class="card-title mt-0">Contract Details</h4>
+                  <p class="card-category">Occupied Stall Spaces</p>
                 </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead class="">
+                        <th>#</th>
+                        <th>Floor</th>
+                        <th>Block</th>
+                        <th>Block Dimensions</th>
+                        <th>Stall Price</th>
+                    </thead>
+                    <?php 
+                        $sql_occupied_stalls = "SELECT * FROM occupied_stalls os INNER JOIN stalls s ON os.stall_id = s.stall_id WHERE contract_id = $contract_id";
+
+                        $result_occupied_stalls = mysqli_query($link, $sql_occupied_stalls);
+                        if(mysqli_num_rows($result_occupied_stalls) > 0){
+                            while($row_occupied_stalls = mysqli_fetch_assoc($result_occupied_stalls)){
+                                echo "<tr align='center'>";
+                                $stall_id = $row_occupied_stalls['stall_id'];
+                                    echo "<td>" . $row_occupied_stalls['stall_id'] . "</td>";
+                                    echo "<td>" . $row_occupied_stalls['floor_no'] . "</td>";
+                                    echo "<td>" . $row_occupied_stalls['block_no'] . "</td>";
+                                    echo "<td>" . $row_occupied_stalls['block_dimension'] . "</td>";
+                                    echo '<td>Php ' . number_format($row_occupied_stalls['stall_price'],2) . '</td>';
+                                    echo "<td>";
+                                    echo "</td>";
+                                echo "</tr>";
+                            }
+                        }else{
+                            echo "<tr>";
+                                echo "<td colspan='5' align='center' style='font-style: italic;'>No records found.</td>";
+                            echo "</tr>";
+                        }
+                    ?>
+                </table>
+
+                <!-- <h4 class="float-left">Rental Payment Information</h4>
+                <a href="api/admin-new-payment.php?contract_id=<?php echo $_GET['contract_id'];?>" class="btn btn-secondary btn-sm float-right" class="">Add</a>
+                <table class="table table-sm table-bordered table-striped">
+                        <thead align="center">
+                            <th>#</th>
+                            <th>Rent Month</th>
+                            <th>Payment per Month</th>
+                            <th>Balance</th>
+                            <th>Amount Paid</th>
+                            <th>Date Paid</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $sql_payment = "SELECT * FROM rental_payment WHERE contract_id = $contract_id";
+                                $result_payment = mysqli_query($link, $sql_payment);
+                                if(mysqli_num_rows($result_payment) > 0 ){
+                                    while($row_payment = mysqli_fetch_assoc($result_payment)){
+                                        $rent_month = $row_payment['rent_month'];
+                                        $date_paid = $row_payment['date_paid'];
+                                        $rentp_id = $row_payment['rentp_id'];
+                                        $null = "";
+                                        $balance = $row_payment['balance'];
+                                        echo '<tr align="center">';
+                                            echo '<form action="api/admin-set-month-payment.php?contract_id='.$contract_id.'" method="POST">';
+                                                echo '<td>' . $row_payment['rentp_id'] . '</td>';
+                                                echo '<input type="hidden" name="rentp_id" value="'.$rentp_id.'">';
+                                                if(empty($rent_month)){
+                                                    echo '<td>
+                                                        <select type="text" name="rent_month" class="form-control form-control-sm" required>
+                                                            <optgroup label="Select Month">
+                                                                <option>January</option>
+                                                                <option>February</option>
+                                                                <option>March</option>
+                                                                <option>April</option>
+                                                                <option>May</option>
+                                                                <option>June</option>
+                                                                <option>July</option>
+                                                                <option>August</option>
+                                                                <option>September</option>
+                                                                <option>October</option>
+                                                                <option>November</option>
+                                                                <option>December</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </td>';
+                                                }else{
+                                                    echo '<td>' . $rent_month . '</td>';
+                                                }
+                                                echo '<td>Php ' . number_format($row_payment['total_amount'],2) . '</td>';
+                                                echo '<td>Php ' . number_format($row_payment['balance'],2) . '</td>';
+                                                echo '<td>Php ' . number_format($row_payment['amount_paid'],2) . '</td>';
+                                                if(empty($date_paid)){
+                                                    echo '<td style="color: gray; font-style: italic; font-weight: 800">N/A</td>';
+                                                }else{
+                                                    $old_date_paid = strtotime($row_payment['date_paid']);
+                                                    $new_date_paid = date('Y-m-d', $old_date_paid);
+                                                    echo '<td>' . $new_date_paid . '</td>';
+                                                }
+
+                                                if(empty($rent_month)){
+                                                    echo '<td>
+                                                    <input type="submit" value="Set" class="btn btn-info btn-sm" style="margin: 2px;">
+                                                    <a href="api/admin-rent-payment.php?rentp_id="'.$rentp_id.'" class="btn btn-success btn-sm disabled" style="margin: 2px;">Pay</a>
+                                                    </td>';
+                                                }else{
+                                                    echo '<td>';
+                                                    // echo '<a href="#" class="btn btn-info btn-sm disabled" style="margin: 2px;">Set</a>';
+                                                    
+                                                    if($balance == 0){
+                                                        echo '<a href="admin-view-contract-details-pay.php?contract_id='.$contract_id.'&rentp_id='.$rentp_id.'" class="btn btn-success btn-sm disabled" style="margin: 2px;">Pay</a>';
+                                                    }else{
+                                                        echo '<a href="admin-view-contract-details-pay.php?contract_id='.$contract_id.'&rentp_id='.$rentp_id.'&stall_id='.$stall_id.'" class="btn btn-success btn-sm " style="margin: 2px;">Pay</a>';
+                                                    }
+                                                    
+                                                    
+                                                    echo '</td>';
+                                                }
+                                            echo '</form>';
+                                        echo '</tr>';
+                                    }
+                                }else{
+                                    echo '<tr align="center">';
+                                        echo '<td colspan="7" style="font-style: italic;">No records found.</td>';
+                                    echo '</tr>';
+                                }
+                            ?>
+                        </tbody>
+                
+              
+                </table> -->
+              </table>
               </div>
             </div>
           </div>
         </div>
-      </div>
-     <footer class="footer">
+            </div>
+        </div>
+        <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
             <ul>
@@ -367,7 +449,7 @@
       </footer>
     </div>
   </div>
- <div class="fixed-plugin">
+<div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
         <i class="fa fa-cog fa-2x"> </i>

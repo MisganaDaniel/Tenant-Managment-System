@@ -1,4 +1,12 @@
-<? php
+<?php
+    // Initialize the session
+    session_start();
+     
+    // Check if the user is logged in, if not then redirect him to login page
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: ../index.php");
+        exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +14,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-<link rel="icon" type="image/png" href="../img/new 4.png">
+  <link rel="icon" type="image/png" href="../img/new 4.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Tenant System Management
@@ -34,19 +42,19 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item  ">
+          <li class="nav-item   ">
             <a class="nav-link" href="./dashboard.php">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item ">
             <a class="nav-link" href="./user.php">
               <i class="material-icons">person</i>
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item  ">
             <a class="nav-link" href="./tables.php">
               <i class="material-icons">content_paste</i>
               <p>list of tables</p>
@@ -70,7 +78,7 @@
               <p>Avalabel space on the floor</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item active">
             <a class="nav-link" href="./map.php">
               <i class="material-icons">library_books</i>
               <p>Application Reports</p>
@@ -88,15 +96,15 @@
               <p>List of Stall Spaces Reports </p>
             </a>
           </li>
+          
         </ul>
       </div>
     </div>
     <div class="main-panel">
-      <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;">User Profile</a>
+            <a class="navbar-brand" href="javascript:;">Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -124,7 +132,7 @@
                 </a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
                   <span class="notification">5</span>
                   <p class="d-lg-none d-md-block">
@@ -132,9 +140,9 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+                 
+                  <a class="dropdown-item" href="#">You have 5 Renewal Requests Reports </a>
+                  <a class="dropdown-item" href="#"> You have new List of Stall Spaces Reports <a>
                   <a class="dropdown-item" href="#">Another Notification</a>
                   <a class="dropdown-item" href="#">Another One</a>
                 </div>
@@ -150,69 +158,202 @@
                   <a class="dropdown-item" href="#">Profile</a>
                   <a class="dropdown-item" href="#">Settings</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="../api/logout.php">Log out</a>
                 </div>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Edit Profile</h4>
-                  <p class="card-category">Complete your profile</p>
+                  <h4 class="card-title ">List of Stalls Appliede</h4>
+                  <p class="card-category"> Application Information
+
+</p>
                 </div>
                 <div class="card-body">
-                  <form>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Username</label>
-                          <input type="text" class="form-control">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+  
+</thead>
+                <tbody>
+                    <?php
+                        require_once "../api/config.php";
+                        $app_id = $_GET['app_id'];
+                        $status_for_button = "";
+
+                        $sql_applied_stalls = "SELECT a.app_id AS 'app_id', a.client_id AS 'client_id',
+                        bc.category_name AS 'category_name', a.business_name AS 'business_name', a.date_applied AS 'date_applied',
+                        a.application_status AS 'application_status', a.applied_term AS 'applied_term',
+                        c.fname AS 'fname', c.lname AS 'lname'
+                        FROM applied_stall a
+                        INNER JOIN business_classification bc ON a.category_id = bc.category_id
+                        INNER JOIN client c ON a.client_id = c.client_id
+                        WHERE app_id = $app_id
+                        ";
+
+                        // Declaring the variables to fetch data from the while loop
+                        $fname = $lname = $business_name = $category_name = $applied_term = $date_applied = $application_status = "";
+
+                        $result_applied_stalls = mysqli_query($link, $sql_applied_stalls);
+                        if(mysqli_num_rows($result_applied_stalls) > 0){
+                            while($row_applied_stalls = mysqli_fetch_assoc($result_applied_stalls)){
+                                $fname = $row_applied_stalls['fname'];
+                                $lname = $row_applied_stalls['lname'];
+                                $business_name = $row_applied_stalls['business_name'];
+                                $category_name = $row_applied_stalls['category_name'];
+                                $applied_term = $row_applied_stalls['applied_term'];
+                                $date_applied = $row_applied_stalls['date_applied'];
+                                $application_status = $row_applied_stalls['application_status'];
+
+                                echo "<tr>";
+                                    echo "<td>Client:</td>";
+                                    echo "<td style='font-style: italic'>" . $fname . " " . $lname . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td>Business Name:</td>";
+                                    echo "<td style='font-style: italic'>" . $business_name . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td>Category:</td>";
+                                    echo "<td style='font-style: italic'>" . $category_name . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td>Applied Term:</td>";
+                                    echo "<td style='font-style: italic'>" . $applied_term . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td>Date Applied:</td>";
+                                    $old_date_applied = strtotime($date_applied);
+                                    $new_date_applied = date('Y-m-d', $old_date_applied);
+                                    echo "<td style='font-style: italic'>" . $new_date_applied . "</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td>Remark:</td>";
+                                    if($application_status == 'Approved'){
+                                        echo "<td style='font-style: italic; font-weight: bold; color: green;'>" . $application_status . "</td>";
+                                    }elseif($application_status == 'Disapproved'){
+                                        echo "<td style='font-style: italic; font-weight: bold; color: red; font-size: 15px;'>" . $application_status . "</td>";
+                                    }elseif($application_status == 'Unapproved'){
+                                        echo "<td style='font-style: italic; font-weight: bold; color: gray; font-size: 15px;'>" . $application_status . "</td>";
+                                    }
+                                echo "</tr>";
+                            }
+                        }
+                    ?>  
+                    </tbody>
+
+
+  </table>
+  <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title "></h4>
+                  <p class="card-category">
+
+</p>     <form action="api/admin-verdict-applied-stall-details.php?app_id=<?php echo $_GET['app_id'];?>" method="POST">
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">           
+                
+                            <th>#</th>
+                            <th>Floor</th>
+                            <th>Block</th>
+                            <th>Block Dimension</th>
+                            <th>Price</th>
+                            <th>Remark</th>
+                            <th>Select</th>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $sql_applied_stall_details = "SELECT ad.app_id AS 'app_id', ad.stall_id AS 'stall_id', 
+                            ad.stall_application_status AS 'stall_application_status', s.floor_no AS 'floor_no',
+                            s.block_no AS 'block_no', s.block_dimension AS 'block_dimension', s.stall_price AS 'stall_price'
+                            FROM applied_stall_details ad
+                            INNER JOIN stalls s ON ad.stall_id = s.stall_id
+                            WHERE ad.app_id = $app_id
+                            ";
+
+                            $result_applied_stall_details = (mysqli_query($link, $sql_applied_stall_details));
+                            if(mysqli_num_rows($result_applied_stall_details) > 0){
+                                while($row_applied_stall_details = mysqli_fetch_assoc($result_applied_stall_details)){
+                                    if($application_status == 'Approved'){
+                                        echo "<tr align='center'>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_id'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['floor_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_dimension'] . "</small></td>";
+                                            echo "<td><small>Php " . number_format($row_applied_stall_details['stall_price'],2) . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_application_status'] . "</small></td>";
+                                            echo "<td><input type='checkbox' name='stall_id[]' value=".$row_applied_stall_details['stall_id']." disabled></td>"; 
+                                        echo "</tr>";
+                                    }elseif($application_status == 'Unapproved'){
+                                        echo "<tr align='center'>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_id'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['floor_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_dimension'] . "</small></td>";
+                                            echo "<td><small>Php " . number_format($row_applied_stall_details['stall_price'],2) . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_application_status'] . "</small></td>";
+                                            echo "<td><input type='checkbox' name='stall_id[]' value=".$row_applied_stall_details['stall_id']."></td>"; 
+                                        echo "</tr>";
+                                    }elseif($application_status == 'Disapproved'){
+                                        echo "<tr align='center'>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_id'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['floor_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_no'] . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['block_dimension'] . "</small></td>";
+                                            echo "<td><small>Php " . number_format($row_applied_stall_details['stall_price'],2) . "</small></td>";
+                                            echo "<td><small>" . $row_applied_stall_details['stall_application_status'] . "</small></td>";
+                                            echo "<td><input type='checkbox' name='stall_id[]' value=".$row_applied_stall_details['stall_id']." disabled></td>"; 
+                                        echo "</tr>";
+                                    }
+                                }
+                            }else{
+                                echo "<tr>";
+                                    echo "<td colspan='7' align='center'><em>No records found.</em></td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                    <?php
+                        if($application_status == 'Approved'){
+                            // echo "<a href='api/api-admin-disapprove-applied-stall.php?app_id=$app_id' class='btn btn-danger btn-sm float-right disabled' style='margin: 5px;'>Disapprove App</a>";
+                            echo "<a href='api/api-admin-approve-applied-stall.php?app_id=$app_id' class='btn btn-success btn-sm float-right disabled' style='margin: 5px;' >Confirmed</a>";
+                        }elseif($application_status == 'Disapproved'){
+                            echo "<input type='submit' name='disapproved' value='Disapprove Stall(s)' class='btn btn-danger btn-sm float-right disabled' style='margin: 5px;'>";
+                            echo "<input type='submit' name='approved' value='Approve Stall(s)' class='btn btn-primary btn-sm float-right disabled' style='margin: 5px;'>";
+                            echo "<a href='api/api-admin-disapprove-applied-stall.php?app_id=$app_id' class='btn btn-danger btn-sm float-right disabled' style='margin: 5px;'>Disapprove App</a>";
+                            echo "<a href='api/api-admin-approve-applied-stall.php?app_id=$app_id' class='btn btn-success btn-sm float-right disabled' style='margin: 5px;' >Approve App</a>";
+                        }elseif($application_status == 'Unapproved'){
+                            echo "<input type='submit' name='disapproved' value='Disapprove Stall(s)' class='btn btn-danger btn-sm float-right' style='margin: 5px;'>";
+                            echo "<input type='submit' name='approved' value='Approve Stall(s)' class='btn btn-primary btn-sm float-right' style='margin: 5px;'>";
+                            echo "<a href='api/api-admin-approve-applied-stall.php?app_id=$app_id' class='btn btn-success btn-sm float-right' style='margin: 5px;' >Confirm</a>";
+                        }
+                    ?>
+                            </form>
                         </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Email address</label>
-                          <input type="email" class="form-control">
-                        </div>
-                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Fist Name</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Last Name</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Password</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
-                    <div class="clearfix"></div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <footer class="footer">
+     <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
             <ul>
@@ -277,13 +418,13 @@
   <script src="../assets/js/plugins/jquery.validate.min.js"></script>
   <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
   <script src="../assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-  <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
   <script src="../assets/js/plugins/bootstrap-selectpicker.js"></script>
   <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
   <script src="../assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
   <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
   <script src="../assets/js/plugins/jquery.dataTables.min.js"></script>
-  <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+  <!--  Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
   <script src="../assets/js/plugins/bootstrap-tagsinput.js"></script>
   <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
   <script src="../assets/js/plugins/jasny-bootstrap.min.js"></script>

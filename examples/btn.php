@@ -1,4 +1,13 @@
-<? php
+
+  <?php
+    // Initialize the session
+    session_start();
+     
+    // Check if the user is logged in, if not then redirect him to login page
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: ../index.php");
+        exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +15,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-<link rel="icon" type="image/png" href="../img/new 4.png">
+  <link rel="icon" type="image/png" href="../img/new 4.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     Tenant System Management
@@ -34,19 +43,19 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item  ">
+          <li class="nav-item   ">
             <a class="nav-link" href="./dashboard.php">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item ">
             <a class="nav-link" href="./user.php">
               <i class="material-icons">person</i>
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item  ">
             <a class="nav-link" href="./tables.php">
               <i class="material-icons">content_paste</i>
               <p>list of tables</p>
@@ -64,7 +73,7 @@
               <p>Sales Price</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item active">
             <a class="nav-link" href="./btn.php">
               <i class="material-icons">bubble_chart</i>
               <p>Avalabel space on the floor</p>
@@ -92,11 +101,10 @@
       </div>
     </div>
     <div class="main-panel">
-      <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;">User Profile</a>
+            <a class="navbar-brand" href="javascript:;">Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -124,7 +132,7 @@
                 </a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
                   <span class="notification">5</span>
                   <p class="d-lg-none d-md-block">
@@ -132,9 +140,9 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+                 
+                  <a class="dropdown-item" href="#">You have 5 Renewal Requests Reports </a>
+                  <a class="dropdown-item" href="#"> You have new List of Stall Spaces Reports <a>
                   <a class="dropdown-item" href="#">Another Notification</a>
                   <a class="dropdown-item" href="#">Another One</a>
                 </div>
@@ -150,69 +158,210 @@
                   <a class="dropdown-item" href="#">Profile</a>
                   <a class="dropdown-item" href="#">Settings</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="../api/logout.php">Log out</a>
                 </div>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <!-- End Navbar -->
-      <div class="content">
+ 
+ <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Edit Profile</h4>
-                  <p class="card-category">Complete your profile</p>
+                  <h4 class="card-title ">xxx building Information </h4>
+                  <p class="card-category"> 1st floor
+
+</p>
                 </div>
                 <div class="card-body">
-                  <form>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Username</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Email address</label>
-                          <input type="email" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Fist Name</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Last Name</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Password</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
-                    <div class="clearfix"></div>
-                  </form>
+                  <div class="table-responsive">
+                    <table class="table">
+            <a href="#" class="btn btn-sq-lg btn-success" 
+    id="1"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+        <i class="fa fa-home fa-5x"></i><br/>
+        Room Dimension  <br>450x350
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-success" 
+    id="2"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>450x450
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-danger"
+    id="5"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>350x350
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-success"
+    id="3"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>250x250
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-warning" 
+    id="4"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+     Room Dimension  <br>550x350
+    </a>
+    
+
+    <div class="d-none">
+        <div id="PopDetail" class="card" style="width: 30rem;">
+            <div class="card-body">
+              <h5 class="card-title" id="PopTitle">Card title</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+        </div>
+                  </div>
+                  </div>
+                  </table>
+                  </div>
+                  </div>
+
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">xxx building Information </h4>
+                  <p class="card-category"> 2st floor
+
+</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+            <a href="#" class="btn btn-sq-lg btn-success" 
+    id="1"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+        <i class="fa fa-home fa-5x"></i><br/>
+        Room Dimension  <br>450x350
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-success" 
+    id="2"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>450x450
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-danger"
+    id="3"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>250x250
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-warning" 
+    id="4"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+     Room Dimension  <br>550x350
+    </a>
+    <a href="#" class="btn btn-sq-lg btn-danger"
+    id="5"
+    onmouseover="displayPopover(this.id)"
+    data-toggle="popover">
+      <i class="fa fa-home fa-5x"></i><br/>
+      Room Dimension  <br>350x350
+    </a>
+
+    <div class="d-none">
+        <div id="PopDetail" class="card" style="width: 30rem;">
+            <div class="card-body">
+              <h5 class="card-title" id="PopTitle">Card title</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
         </div>
-      </div>
-      <footer class="footer">
+                  </div>
+                  </div>
+                  </table>
+                  </div>
+                  </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+    <scrip src="https://unpkg.com/@popperjs/core@2"></scrip>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="./bootstrap.bundle.min.js"></script>
+    <script>
+        function displayPopover(id){
+            // use id to get info about the class rooms.
+            var counter;
+            $('[data-toggle="popover"]').popover({
+                trigger: 'manual',
+                animation: false,
+                html: true,
+                content: ajaxLoad(id),
+                container: 'body',
+                placement: 'auto'
+            }).on("mouseenter",function () {
+                var _this = this; // thumbcontainer
+
+               // clear the counter
+                clearTimeout(counter);
+                // Close all other Popovers
+                $('[data-toggle="popover"]').not(_this).popover('hide');
+
+                // start new timeout to show popover
+                counter = setTimeout(function(){
+                    if($(_this).is(':hover'))
+                    {
+                        $(_this).popover("show");
+                    }
+                    $('[data-toggle="popover"]').on("mouseleave", function () {
+                        $(this).popover('hide');
+                    });
+                }, 20);
+
+            }).on("mouseleave", function () {
+                var _this = this;
+
+                setTimeout(function () {
+                    if (!$('[data-toggle="popover"]:hover').length) {
+                        if(!$(_this).is(':hover')) 
+                        {
+                            $(_this).popover('hide');
+                        }
+                    }
+                }, 20);
+            });
+        }
+        function ajaxLoad(id){
+            //replace PopDetail by ajax returned data
+            console.log(id);
+            return $('#PopDetail').html();
+        }
+    </script>
+            
+
+    <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
             <ul>
@@ -244,7 +393,7 @@
       </footer>
     </div>
   </div>
-  <div class="fixed-plugin">
+<div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
         <i class="fa fa-cog fa-2x"> </i>
@@ -277,13 +426,13 @@
   <script src="../assets/js/plugins/jquery.validate.min.js"></script>
   <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
   <script src="../assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-  <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
   <script src="../assets/js/plugins/bootstrap-selectpicker.js"></script>
   <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
   <script src="../assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
   <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
   <script src="../assets/js/plugins/jquery.dataTables.min.js"></script>
-  <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+  <!--  Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
   <script src="../assets/js/plugins/bootstrap-tagsinput.js"></script>
   <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
   <script src="../assets/js/plugins/jasny-bootstrap.min.js"></script>
